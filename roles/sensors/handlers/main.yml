@@ -1,0 +1,5 @@
+---
+- name: restart_sensors
+  systemd:
+    state: restarted
+    name: sensor_monitor

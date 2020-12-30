@@ -19,7 +19,7 @@
   hostname: name={{ hostname }}
 
 - name: New hostname also to /etc/hosts file
-  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1' line='127.0.1.1 {{ hostname }}'
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.0\.1' line='127.0.0.1 {{ hostname }}'
 
 - name: Set timezone
   timezone:
@@ -85,15 +85,27 @@
   notify: restart-rsyslog
 
 - name: Enable SPI
-  lineinfile: dest=/boot/config.txt regexp='^#(dtparam=spi=on)$' line='\1' backrefs=yes
+  lineinfile: path=/boot/config.txt regexp='^#(dtparam=spi=on)$' line='\1' backrefs=yes
   notify: reboot
 
 - name: Enable I2C
-  lineinfile: dest=/boot/config.txt regexp='^#(dtparam=i2c_arm=on)$' line='\1' backrefs=yes
+  lineinfile: path=/boot/config.txt regexp='^#(dtparam=i2c_arm=on)$' line='\1' backrefs=yes
   notify: reboot
 
+- name: Enable serial port
+  lineinfile: path=/boot/config.txt regexp='^#(enable_uart=1)$' line='\1' backrefs=yes
+  notify: reboot
+
+- name: disable bluetooth overlay so serial port free
+  systemd: name=hciuart enabled=no
+  notify: reboot
+
+- name: disable bluetooth hardware
+  lineinfile: path=/boot/config.txt regexp='^(dtoverlay=disable-bt)$' state=present line='\1' backrefs=yes
+  notify: reboot
+  
 - name: Use minimum amount of memory for GPU
-  lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=256'
+  lineinfile: path=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=256'
   notify: reboot
 
 # Reboot due to possible changes now

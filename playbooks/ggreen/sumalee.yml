@@ -20,7 +20,7 @@
 
 # Public variables
   vars:
-    - hostname: raspberrypi
+    - hostname: sumalee
     - timezone: America/Los_Angeles
     
 # Secret variables are stored in an ansible vault 
@@ -57,6 +57,7 @@
         - { device: "/dev/serial0", baud: "9600" }
 #      kplex_marine_traffic_forwarding_enabled: true
 #      kplex_logging_enabled: true
+    - role: sensors
 #     - role: signalk-npm
 #       node_app_env:
 #         - "NODE_ENV=production"

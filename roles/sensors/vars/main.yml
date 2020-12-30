@@ -1,0 +1,2 @@
+---
+sensors_path: /home/{{ ansible_ssh_user }}/sensors
