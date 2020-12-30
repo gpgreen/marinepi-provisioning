@@ -1,10 +1,11 @@
 # Ansible-generated configuration file
 
 # Serial inputs
-{% for device in kplex_serial_inputs %}
+{% for item in kplex_serial_inputs %}
 [serial]
-filename={{ device }}
+filename={{ item.device }}
 direction=in
+baud={{ item.baud }}
 
 {% endfor %}
 

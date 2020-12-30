@@ -1,0 +1,11 @@
+[Unit]
+Description = NMEA 0183 Multiplexer
+Documentation = http://www.stripydog.com/kplex/configuration.html
+After=syslog.target network.target audit.service
+
+[Service]
+Type=Simple
+ExecStart=/usr/bin/kplex -o mode=foreground
+
+[Install]
+WantedBy=multi-user.target

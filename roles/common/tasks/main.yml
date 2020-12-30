@@ -42,6 +42,7 @@
     packages:
     - build-essential
     - git
+    - cmake
     - curl
     - htop
     - nmap
@@ -92,7 +93,7 @@
   notify: reboot
 
 - name: Use minimum amount of memory for GPU
-  lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=16'
+  lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=256'
   notify: reboot
 
 # Reboot due to possible changes now

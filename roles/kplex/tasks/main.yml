@@ -22,9 +22,9 @@
 #
 #    - role: kplex
 #      kplex_serial_inputs:
-#        - "/dev/nexus"
-#        - "/dev/gps"
-#        - "/dev/ais"
+#        - { device: "/dev/nexus", baud: "4800" }
+#        - { device: "/dev/gps", baud: "4800" }
+#        - { device: "/dev/ais", baud: "4800" }
 #      kplex_output_params:
 #        - "device=wlan0"
 #        - "port=10110"
@@ -36,7 +36,7 @@
   get_url: 
     url="{{ kplex_url }}"
     dest="/tmp/{{ kplex_name }}.deb"
-  sudo: no
+  become: no
   
 - name: Install kplex
   apt: deb="/tmp/{{ kplex_name }}.deb"
@@ -45,5 +45,12 @@
   template: src=kplex_conf.j2 dest=/etc/kplex.conf
   notify: restart_kplex
 
+- name: Generate service file
+  template: src=kplex_service.j2 dest=/lib/systemd/system/kplex.service
+  notify: restart_kplex
+
 - name: Make kplex start at boot
-  shell: update-rc.d kplex defaults
+  systemd:
+    name: kplex
+    enabled: yes
+    masked: no

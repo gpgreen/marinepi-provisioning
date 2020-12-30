@@ -1,3 +1,5 @@
 ---
 - name: restart_kplex
-  service: name=kplex state=restarted enabled=yes
+  systemd:
+    state: restarted
+    name: kplex
