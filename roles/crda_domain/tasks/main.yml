@@ -16,7 +16,7 @@
 # Buster Lite (at least) seems to require contry code specified also in wpa_supplicant 
 # to persist unblocked wifi (rfkill) over reboots
 - name: Set wpa supplicant
-  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf regexp="country=.*" line="country={{ crda_domain_code }}"
+  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant-{{ wificlient_interface }}.conf regexp="country=.*" line="country={{ crda_domain_code }}"
   notify: reboot
 
 # Unblock wifi now

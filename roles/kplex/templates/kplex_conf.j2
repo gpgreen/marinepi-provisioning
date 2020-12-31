@@ -9,6 +9,15 @@ baud={{ item.baud }}
 
 {% endfor %}
 
+{% for item in kplex_udp_inputs %}
+[udp]
+address={{ item.address }}
+port={{ item.port }}
+type=unicast
+direction=in
+
+{% endfor %}
+
 # Server output
 name=Server
 [{{ kplex_server_transport }}]

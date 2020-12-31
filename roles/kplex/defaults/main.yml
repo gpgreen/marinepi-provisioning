@@ -7,6 +7,7 @@ kplex_url: http://www.stripydog.com/download/{{ kplex_name }}.deb
 
 # Inputs
 kplex_serial_inputs: []
+kplex_udp_intputs: []
 
 # Server output
 kplex_server_transport: tcp

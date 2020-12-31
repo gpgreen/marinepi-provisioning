@@ -15,6 +15,13 @@
   - name: "Install mdns dependency"
     apt: pkg=libavahi-compat-libdnssd-dev state=latest
 
+  - name: Create signalk settings dir
+    command:
+      cmd: mkdir /home/{{ node_app_user }}/.signalk
+      creates: /home/{{ node_app_user }}/.signalk
+    become_user: "{{ node_app_user }}"
+    when: signalk_defaults_file is defined or signalk_settings_file is defined
+    
   - name: Copy custom SignalK server defaults
     copy:
       src: "{{ signalk_defaults_file }}"
