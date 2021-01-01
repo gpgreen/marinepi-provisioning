@@ -1,0 +1,3 @@
+---
+proj_path: /home/{{ ansible_ssh_user }}/proj-4.9.3
+xygrib_path: /home/{{ ansible_ssh_user }}/xygrib

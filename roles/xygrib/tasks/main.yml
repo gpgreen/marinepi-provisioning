@@ -1,0 +1,92 @@
+# Copyright 2020 Greg Green <ggreen@bit-builder.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Install cmake
+  apt: pkg=cmake state=latest
+
+- name: Install qt5
+  apt: pkg=qt5-default state=latest
+
+- name: Install qt5 tools
+  apt: pkg=qttools5-dev state=latest
+
+- name: Install libnova
+  apt: pkg=libnova-dev state=latest
+
+- name: Install libopenjp2-7
+  apt: pkg=libopenjp2-7-dev state=latest
+
+- name: Install libbz2
+  apt: pkg=libbz2-dev state=latest
+
+- name: Install zlib
+  apt: pkg=zlib1g-dev state=latest
+
+- name: Install libpng
+  apt: pkg=libpng-dev state=latest
+
+- name: Download proj
+  get_url: url=https://download.osgeo.org/proj/proj-4.9.3.tar.gz dest=/home/{{ ansible_ssh_user }}
+  become: no
+  register: proj_sources
+
+- name: unpack proj
+  unarchive: src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz dest={{ proj_path }}
+  become: no
+  when: proj_sources.changed
+  
+- command: ./configure --prefix=/usr
+  args:
+    chdir: "{{ proj_path }}"
+  become: no
+  when: proj_sources.changed
+
+- command: make
+  args:
+    chdir: "{{ proj_path }}"
+  become: no
+  when: proj_sources.changed
+
+- command: make install
+  args:
+    chdir: "{{ proj_path }}"
+  when: proj_sources.changed
+
+- name: Download xygrib
+  git: repo=https://github.com/gpgreen/XyGrib.git version=speedup dest={{ xygrib_path }}
+  become: no
+  register: xygrib_sources
+
+- command: mkdir {{ xygrib_path }}/build
+  become: no
+  when: xygrib_sources.changed
+
+- command: cmake -DCMAKE_INSTALL_PREFIX=/opt ..
+  args:
+    chdir: "{{ xygrib_path }}/build"
+  become: no
+  when: xygrib_sources.changed
+
+- command: make
+  args:
+    chdir: "{{ xygrib_path }}/build"
+  become: no
+  when: xygrib_sources.changed
+
+- command: make install
+  args:
+    chdir: "{{ xygrib_path }}/build"
+  ignore_errors: yes  # can't help the way Makefile is written...
+  when: xygrib_sources.changed

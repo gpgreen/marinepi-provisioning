@@ -52,6 +52,7 @@
 #      kplex_marine_traffic_forwarding_enabled: true
 #      kplex_logging_enabled: true
     - role: sensors
+    - role: xygrib
   tasks:
     - name: Enforce HTTPS for all the GIT traffic
       command: "{{item}}"
