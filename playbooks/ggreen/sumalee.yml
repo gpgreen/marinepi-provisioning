@@ -23,7 +23,8 @@
     - hostname: sumalee
     - timezone: America/Los_Angeles
     - crda_domain_code: US
-
+    - signalk_server_git_branch: v1.37.5
+    - signalk_settings_file: signalk-settings-sumalee.json
 # Secret variables are stored in an ansible vault 
 # protected with a password in a file referenced via env variable
 # export ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault_pass.txt 
@@ -38,9 +39,7 @@
     - common
     - role: crda_domain
     - wificlient
-    - role: signalk
-      node_app_env:
-      signalk_settings_file: signalk-settings-sumalee.json
+    - signalk
     - role: kplex
       vars:
         kplex_serial_inputs:
@@ -52,6 +51,7 @@
 #      kplex_marine_traffic_forwarding_enabled: true
 #      kplex_logging_enabled: true
     - role: sensors
+    - role: opencpn
     - role: xygrib
   tasks:
     - name: Enforce HTTPS for all the GIT traffic

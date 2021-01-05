@@ -1,0 +1,12 @@
+[Unit]
+Description = Nautical Chart Display
+After=graphical.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/opencpn
+User={{ ansible_ssh_user }}
+Group={{ ansible_ssh_user }}
+
+[Install]
+WantedBy=graphical.target

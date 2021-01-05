@@ -47,19 +47,22 @@
   become: no
   when: proj_sources.changed
   
-- command: ./configure --prefix=/usr
+- name: configure proj
+  command: ./configure --prefix=/usr
   args:
     chdir: "{{ proj_path }}"
   become: no
   when: proj_sources.changed
 
-- command: make
+- name: build proj
+  command: make
   args:
     chdir: "{{ proj_path }}"
   become: no
   when: proj_sources.changed
 
-- command: make install
+- name: install proj
+  command: make install
   args:
     chdir: "{{ proj_path }}"
   when: proj_sources.changed
@@ -69,24 +72,25 @@
   become: no
   register: xygrib_sources
 
-- command: mkdir {{ xygrib_path }}/build
+- file: state=directory path="{{ xygrib_path }}/build"
   become: no
-  when: xygrib_sources.changed
 
-- command: cmake -DCMAKE_INSTALL_PREFIX=/opt ..
+- name: configure xygrib
+  command: cmake -DCMAKE_INSTALL_PREFIX=/opt ..
   args:
     chdir: "{{ xygrib_path }}/build"
   become: no
   when: xygrib_sources.changed
 
-- command: make
+- name: build xygrib
+  command: make
   args:
     chdir: "{{ xygrib_path }}/build"
   become: no
   when: xygrib_sources.changed
 
-- command: make install
+- name: install xygrib
+  command: make install
   args:
     chdir: "{{ xygrib_path }}/build"
-  ignore_errors: yes  # can't help the way Makefile is written...
   when: xygrib_sources.changed

@@ -1,0 +1,105 @@
+# Copyright 2020 Greg Green <ggreen@bit-builder.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Install cmake
+  apt: pkg=cmake state=latest
+
+- name: Install libgtk-3-dev
+  apt: pkg=libgtk-3-dev state=latest
+
+- name: Install libwxgtk-webview3.0-gtk3-dev
+  apt: pkg=libwxgtk-webview3.0-gtk3-dev state=latest
+
+- name: Install libwxgtk-media3.0-gtk3-dev
+  apt: pkg=libwxgtk-media3.0-gtk3-dev state=latest
+
+- name: Install libgstreamer1.0-dev
+  apt: pkg=libgstreamer1.0-dev state=latest
+
+- name: Install libwxgtk3.0-dev
+  apt: pkg=libwxgtk3.0-dev state=latest
+
+- name: Install libarchive-dev
+  apt: pkg=libarchive-dev state=latest
+
+- name: Install libsqlite3-dev
+  apt: pkg=libsqlite3-dev state=latest
+
+- name: Install libbz2-dev
+  apt: pkg=libbz2-dev state=latest
+
+- name: Install libcurl4-openssl-dev
+  apt: pkg=libcurl4-openssl-dev state=latest
+
+- name: Install libelf-dev
+  apt: pkg=libelf-dev state=latest
+
+- name: Install libsndfile1-dev
+  apt: pkg=libsndfile1-dev state=latest
+
+- name: Install libcanberra-gtk-module
+  apt: pkg=libcanberra-gtk-module state=latest
+
+- name: Install exif
+  apt: pkg=exif state=latest
+
+- name: Install libexif-dev
+  apt: pkg=libexif-dev state=latest
+
+- name: Install portaudio19-dev
+  apt: pkg=portaudio19-dev state=latest
+
+- name: Install liblzma-dev
+  apt: pkg=liblzma-dev state=latest
+
+- name: Install liblz4-dev
+  apt: pkg=liblz4-dev state=latest
+
+- name: Download OpenCPN
+  git: repo=https://github.com/OpenCPN/OpenCPN.git version=v5.2.4 dest={{ opencpn_path }}
+  become: no
+  register: opencpn_sources
+
+- file: state=directory path="{{ opencpn_path }}/build"
+  become: no
+
+- name: configure OpenCPN
+  command: cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+  args:
+    chdir: "{{ opencpn_path }}/build"
+  become: no
+  when: opencpn_sources.changed
+
+- name: build OpenCPN
+  command: make
+  args:
+    chdir: "{{ opencpn_path }}/build"
+  become: no
+  when: opencpn_sources.changed
+
+- name: install OpenCPN
+  command: make install
+  args:
+    chdir: "{{ opencpn_path }}/build"
+  when: opencpn_sources.changed
+
+- name: copy service file
+  template: src=opencpn.service.j2 dest=/lib/systemd/system/opencpn.service
+  
+- name: OpenCPN start at boot
+  systemd:
+    name: opencpn
+    enabled: yes
+    masked: no
