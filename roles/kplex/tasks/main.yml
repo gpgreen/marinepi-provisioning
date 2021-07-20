@@ -32,6 +32,12 @@
 #
 
 ---
+- name: create group
+  user: name="{{ kplex_group }}" state=present
+  
+- name: create user
+  user: name="{{ kplex_user }}" shell=/bin/bash password='!' groups=dialout,{{ kplex_group }} append=yes
+  
 - name: Download kplex
   get_url: 
     url="{{ kplex_url }}"

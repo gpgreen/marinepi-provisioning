@@ -38,6 +38,15 @@ ofilter={{ kplex_marine_traffic_ofilter }}
 direction=out
 {%- endif %}
 
+{% if kplex_gps_forwarding_enabled %}
+# GPS Serial forwarding
+name=NMEAGPS
+[{{ kplex_gps_forward_transport }}]
+{% for param in kplex_gps_forward_params %}
+{{ param }}
+{% endfor %}
+{%- endif %}
+
 {% if kplex_logging_enabled %}
 
 # Data logging to a file
@@ -47,6 +56,6 @@ filename={{ kplex_logging_file }}
 timestamp={{ kplex_logging_timestamp }}
 direction=out
 append=yes
-owner=pi
-group=pi
+owner={{ kplex_user }}
+group={{ kplex_group }}
 {%- endif %}

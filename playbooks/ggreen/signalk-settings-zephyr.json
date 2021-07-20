@@ -1,15 +1,15 @@
 {
   "vessel": {
-    "name": "Sumalee",
+    "name": "Zephyr",
     "mmsi": "230056510",
-    "brand": "Welsford",
-    "type": "Navigator",
+    "brand": "Cal",
+    "type": "34",
 
     "design": {
-      "length": 4.5,
-      "beam": 1.8,
-      "airHeight": 7.5,
-      "draft": 1.5 
+      "length": 10.3,
+      "beam": 3.0,
+      "airHeight": 14.6,
+      "draft": 1.4 
     },
 
     "communication": {

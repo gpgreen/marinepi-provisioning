@@ -20,7 +20,7 @@
 
 # Public variables
   vars:
-    - hostname: sumalee
+    - hostname: zephyr
     - timezone: America/Los_Angeles
     - crda_domain_code: US
 #    - signalk_server_git_branch: v1.37.5
@@ -30,10 +30,10 @@
 # export ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault_pass.txt 
 #
 # Secret variables can be accessed locally via 
-# ansible-vault [encrypt|decrypt|view] secrets/sumalee.yml
+# ansible-vault [encrypt|decrypt|view] secrets/zephyr.yml
 
   vars_files:
-    - sumalee-secrets.yml
+    - zephyr-secrets.yml
 
   roles:
     - common
@@ -51,6 +51,7 @@
 #      kplex_marine_traffic_forwarding_enabled: true
 #      kplex_gps_forwarding_enabled: true
 #      kplex_logging_enabled: true
+    - role: ntp
     - role: sensors
     - role: opencpn
     - role: xygrib
@@ -63,7 +64,7 @@
       become: no
       
     # udev rules for serial-usb devices
-#    - lineinfile: dest=/etc/udev/rules.d/98-sumalee-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
+#    - lineinfile: dest=/etc/udev/rules.d/98-zephyr-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
 
   handlers:
     - include: ../../handlers/handlers.yml

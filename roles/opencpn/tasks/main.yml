@@ -95,11 +95,8 @@
     chdir: "{{ opencpn_path }}/build"
   when: opencpn_sources.changed
 
-- name: copy service file
-  template: src=opencpn.service.j2 dest=/lib/systemd/system/opencpn.service
-  
-- name: OpenCPN start at boot
-  systemd:
-    name: opencpn
-    enabled: yes
-    masked: no
+- name: autostart opencpn
+  lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^(@opencpn)$' line='\1' backrefs=yes
+
+- name: remove screensaver from autostart
+  lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^@xscreensaver*' state=absent

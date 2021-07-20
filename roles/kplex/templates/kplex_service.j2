@@ -6,6 +6,8 @@ After=syslog.target network.target audit.service
 [Service]
 Type=simple
 ExecStart=/usr/bin/kplex -o mode=foreground
+User={{ kplex_user }}
+Group={{ kplex_group }}
 
 [Install]
 WantedBy=multi-user.target
