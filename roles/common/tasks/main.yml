@@ -60,6 +60,7 @@
     - wavemon
     - telnet
     - speedtest-cli
+    - gpiod
   notify: reboot
 
 - name: Autoremove any unused packages
@@ -103,7 +104,7 @@
 - name: disable bluetooth hardware
   lineinfile: path=/boot/config.txt regexp='^(dtoverlay=disable-bt)$' state=present line='\1' backrefs=yes
   notify: reboot
-  
+
 - name: Use minimum amount of memory for GPU
   lineinfile: path=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=256'
   notify: reboot

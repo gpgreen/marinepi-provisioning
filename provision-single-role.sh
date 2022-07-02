@@ -8,7 +8,7 @@ shift 1
 cat > /tmp/play.yml <<PLAYBOOK
 ---
 - hosts: all
-  remote_user: pi
+  remote_user: ggreen
   gather_facts: yes
   become: yes
 

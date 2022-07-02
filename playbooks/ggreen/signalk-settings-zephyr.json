@@ -3,13 +3,13 @@
     "name": "Zephyr",
     "mmsi": "230056510",
     "brand": "Cal",
-    "type": "34",
+    "type": "34 MkIII",
 
     "design": {
       "length": 10.3,
       "beam": 3.0,
       "airHeight": 14.6,
-      "draft": 1.4 
+      "draft": 1.5 
     },
 
     "communication": {

@@ -16,10 +16,19 @@
 - name: Install cmake
   apt: pkg=cmake state=latest
 
-- name: Install qt5
-  apt: pkg=qt5-default state=latest
+- name: Install qt5base-dev
+  apt: pkg=qtbase5-dev state=latest
 
-- name: Install qt5 tools
+- name: Install qtchooser
+  apt: pkg=qtchooser state=latest
+
+- name: Install qt5-qmake
+  apt: pkg=qt5-qmake state=latest
+
+- name: Install qtbase5-dev-tools
+  apt: pkg=qtbase5-dev-tools state=latest
+
+- name: Install qttools5-dev
   apt: pkg=qttools5-dev state=latest
 
 - name: Install libnova
@@ -38,17 +47,17 @@
   apt: pkg=libpng-dev state=latest
 
 - name: Download proj
-  get_url: url=https://download.osgeo.org/proj/proj-4.9.3.tar.gz dest=/home/{{ ansible_ssh_user }}
+  get_url: url={{ proj_url }} dest=/home/{{ ansible_ssh_user }}
   become: no
   register: proj_sources
 
 - name: unpack proj
-  unarchive: src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz dest={{ proj_path }}
+  unarchive: remote_src=yes src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz dest={{ proj_path }}
   become: no
   when: proj_sources.changed
-  
+
 - name: configure proj
-  command: ./configure --prefix=/usr
+  command: ./configure --prefix={{ proj_install_root }}
   args:
     chdir: "{{ proj_path }}"
   become: no
@@ -68,7 +77,7 @@
   when: proj_sources.changed
 
 - name: Download xygrib
-  git: repo=https://github.com/gpgreen/XyGrib.git version=speedup dest={{ xygrib_path }}
+  git: repo={{ xygrib_repo }} version={{ xygrib_version }} dest={{ xygrib_path }}
   become: no
   register: xygrib_sources
 
@@ -76,7 +85,7 @@
   become: no
 
 - name: configure xygrib
-  command: cmake -DCMAKE_INSTALL_PREFIX=/opt ..
+  command: cmake -DCMAKE_INSTALL_PREFIX={{ xygrib_install_root }} ..
   args:
     chdir: "{{ xygrib_path }}/build"
   become: no

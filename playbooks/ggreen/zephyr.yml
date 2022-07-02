@@ -14,7 +14,7 @@
 
 ---
 - hosts: all
-  remote_user: pi
+  remote_user: ggreen
   gather_facts: yes
   become: yes
 
@@ -25,11 +25,11 @@
     - crda_domain_code: US
 #    - signalk_server_git_branch: v1.37.5
 #    - signalk_settings_file: signalk-settings-sumalee.json
-# Secret variables are stored in an ansible vault 
+# Secret variables are stored in an ansible vault
 # protected with a password in a file referenced via env variable
-# export ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault_pass.txt 
+# export ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault_pass.txt
 #
-# Secret variables can be accessed locally via 
+# Secret variables can be accessed locally via
 # ansible-vault [encrypt|decrypt|view] secrets/zephyr.yml
 
   vars_files:
@@ -39,6 +39,12 @@
     - common
     - role: crda_domain
     - wificlient
+    - role: hotspot
+      vars:
+        hotspot_passphrase: zephyr2zephyrcal34
+        hotspot_ssid: zephyr-cal34
+        hotspot_interface: wlan0
+        hotspot_channel: 11
 #    - signalk
     - role: kplex
       vars:
@@ -52,7 +58,7 @@
 #      kplex_gps_forwarding_enabled: true
 #      kplex_logging_enabled: true
     - role: ntp
-    - role: sensors
+#    - role: sensors
     - role: opencpn
     - role: xygrib
   tasks:
@@ -62,7 +68,7 @@
        - 'git config --global url."https://github.com/".insteadOf git@github.com:'
        - 'git config --global url."https://".insteadOf git://'
       become: no
-      
+
     # udev rules for serial-usb devices
 #    - lineinfile: dest=/etc/udev/rules.d/98-zephyr-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
 

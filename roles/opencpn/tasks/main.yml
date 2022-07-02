@@ -28,8 +28,8 @@
 - name: Install libgstreamer1.0-dev
   apt: pkg=libgstreamer1.0-dev state=latest
 
-- name: Install libwxgtk3.0-dev
-  apt: pkg=libwxgtk3.0-dev state=latest
+#- name: Install libwxgtk3.0-dev
+#  apt: pkg=libwxgtk3.0-dev state=latest
 
 - name: Install libarchive-dev
   apt: pkg=libarchive-dev state=latest
@@ -67,6 +67,9 @@
 - name: Install liblz4-dev
   apt: pkg=liblz4-dev state=latest
 
+- name: Install gettext
+  apt: pkg=gettext state=latest
+
 - name: Download OpenCPN
   git: repo=https://github.com/OpenCPN/OpenCPN.git version=v5.2.4 dest={{ opencpn_path }}
   become: no
@@ -96,7 +99,7 @@
   when: opencpn_sources.changed
 
 - name: autostart opencpn
-  lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^(@opencpn)$' line='\1' backrefs=yes
+  lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^@opencpn$' line=@opencpn insertafter=EOF
 
 - name: remove screensaver from autostart
   lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^@xscreensaver*' state=absent
