@@ -1,0 +1,5 @@
+---
+- name: restart_shutdown_monitor
+  systemd:
+    state: restarted
+    name: shutdown_monitor

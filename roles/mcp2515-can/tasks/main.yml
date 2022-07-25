@@ -5,6 +5,7 @@
     regexp='^dtoverlay=mcp2515-{{ mcp2515_overlay_can_device }}'
     line="dtoverlay=mcp2515-{{ mcp2515_overlay_can_device }},oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
   notify: reboot
+  when: mcp2515_use_boot_overlay
 
 - name: Setup a CAN device
   template:

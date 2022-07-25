@@ -1,6 +1,6 @@
 ---
 
-rust_home: "{{ ansible_env.HOME }}"
+rust_home: "/home/{{ ansible_user }}"
 
 cargo_home: "{{ rust_home }}/.cargo"
 rustup_bin: "{{ rust_home }}/.cargo/bin/rustup"

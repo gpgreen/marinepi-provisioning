@@ -25,13 +25,13 @@
     - crda_domain_code: US
 #    - signalk_server_git_branch: v1.37.5
 #    - signalk_settings_file: signalk-settings-sumalee.json
+
 # Secret variables are stored in an ansible vault
 # protected with a password in a file referenced via env variable
 # export ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible_vault_pass.txt
 #
 # Secret variables can be accessed locally via
 # ansible-vault [encrypt|decrypt|view] secrets/zephyr.yml
-
   vars_files:
     - zephyr-secrets.yml
 
@@ -58,9 +58,13 @@
 #      kplex_gps_forwarding_enabled: true
 #      kplex_logging_enabled: true
     - role: ntp
-#    - role: sensors
     - role: opencpn
     - role: xygrib
+    - role: rust
+    - role: mcp2515-can
+      vars:
+        mcp2515_use_boot_overlay: false
+    - role: chartplotterhat_utils
   tasks:
     - name: Enforce HTTPS for all the GIT traffic
       command: "{{item}}"

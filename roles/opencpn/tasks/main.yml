@@ -14,61 +14,27 @@
 
 ---
 - name: Install cmake
-  apt: pkg=cmake state=latest
-
-- name: Install libgtk-3-dev
-  apt: pkg=libgtk-3-dev state=latest
-
-- name: Install libwxgtk-webview3.0-gtk3-dev
-  apt: pkg=libwxgtk-webview3.0-gtk3-dev state=latest
-
-- name: Install libwxgtk-media3.0-gtk3-dev
-  apt: pkg=libwxgtk-media3.0-gtk3-dev state=latest
-
-- name: Install libgstreamer1.0-dev
-  apt: pkg=libgstreamer1.0-dev state=latest
-
-#- name: Install libwxgtk3.0-dev
-#  apt: pkg=libwxgtk3.0-dev state=latest
-
-- name: Install libarchive-dev
-  apt: pkg=libarchive-dev state=latest
-
-- name: Install libsqlite3-dev
-  apt: pkg=libsqlite3-dev state=latest
-
-- name: Install libbz2-dev
-  apt: pkg=libbz2-dev state=latest
-
-- name: Install libcurl4-openssl-dev
-  apt: pkg=libcurl4-openssl-dev state=latest
-
-- name: Install libelf-dev
-  apt: pkg=libelf-dev state=latest
-
-- name: Install libsndfile1-dev
-  apt: pkg=libsndfile1-dev state=latest
-
-- name: Install libcanberra-gtk-module
-  apt: pkg=libcanberra-gtk-module state=latest
-
-- name: Install exif
-  apt: pkg=exif state=latest
-
-- name: Install libexif-dev
-  apt: pkg=libexif-dev state=latest
-
-- name: Install portaudio19-dev
-  apt: pkg=portaudio19-dev state=latest
-
-- name: Install liblzma-dev
-  apt: pkg=liblzma-dev state=latest
-
-- name: Install liblz4-dev
-  apt: pkg=liblz4-dev state=latest
-
-- name: Install gettext
-  apt: pkg=gettext state=latest
+  apt:
+    state: latest
+    pkg:
+      - cmake
+      - libgtk-3-dev
+      - libwxgtk-webview3.0-gtk3-dev
+      - libwxgtk-media3.0-gtk3-dev
+      - libgstreamer1.0-dev
+      - libarchive-dev
+      - libsqlite3-dev
+      - libbz2-dev
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libsndfile1-dev
+      - libcanberra-gtk-module
+      - exif
+      - libexif-dev
+      - portaudio19-dev
+      - liblzma-dev
+      - liblz4-dev
+      - gettext
 
 - name: Download OpenCPN
   git: repo=https://github.com/OpenCPN/OpenCPN.git version=v5.2.4 dest={{ opencpn_path }}

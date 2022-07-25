@@ -14,37 +14,20 @@
 
 ---
 - name: Install cmake
-  apt: pkg=cmake state=latest
-
-- name: Install qt5base-dev
-  apt: pkg=qtbase5-dev state=latest
-
-- name: Install qtchooser
-  apt: pkg=qtchooser state=latest
-
-- name: Install qt5-qmake
-  apt: pkg=qt5-qmake state=latest
-
-- name: Install qtbase5-dev-tools
-  apt: pkg=qtbase5-dev-tools state=latest
-
-- name: Install qttools5-dev
-  apt: pkg=qttools5-dev state=latest
-
-- name: Install libnova
-  apt: pkg=libnova-dev state=latest
-
-- name: Install libopenjp2-7
-  apt: pkg=libopenjp2-7-dev state=latest
-
-- name: Install libbz2
-  apt: pkg=libbz2-dev state=latest
-
-- name: Install zlib
-  apt: pkg=zlib1g-dev state=latest
-
-- name: Install libpng
-  apt: pkg=libpng-dev state=latest
+  apt:
+    state: latest
+    pkg:
+    - cmake
+    - qtbase5-dev
+    - qtchooser
+    - qt5-qmake
+    - qtbase5-dev-tools
+    - qttools5-dev
+    - libnova-dev
+    - libopenjp2-7-dev
+    - libbz2-dev
+    - zlib1g-dev
+    - libpng-dev
 
 - name: Download proj
   get_url: url={{ proj_url }} dest=/home/{{ ansible_ssh_user }}
@@ -52,9 +35,12 @@
   register: proj_sources
 
 - name: unpack proj
-  unarchive: remote_src=yes src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz dest={{ proj_path }}
+  unarchive:
+    remote_src=yes
+    src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz
+    dest=/home/{{ ansible_ssh_user }}
+    creates={{ proj_path }}
   become: no
-  when: proj_sources.changed
 
 - name: configure proj
   command: ./configure --prefix={{ proj_install_root }}
@@ -95,11 +81,11 @@
   command: make
   args:
     chdir: "{{ xygrib_path }}/build"
+    creates: "{{ xygrib_path }}/build/src/XyGrib"
   become: no
-  when: xygrib_sources.changed
 
 - name: install xygrib
   command: make install
   args:
     chdir: "{{ xygrib_path }}/build"
-  when: xygrib_sources.changed
+    creates: "{{ xygrib_install_root }}/bin/XyGrib"

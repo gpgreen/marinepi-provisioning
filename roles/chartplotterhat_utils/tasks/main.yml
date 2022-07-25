@@ -1,0 +1,41 @@
+# Copyright 2022 Greg Green <ggreen@bit-builder.com>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Download chartplotterhat_utils
+  git: repo=https://github.com/gpgreen/chartplotterhat_utils dest={{ chartplotterhat_utils_path }}
+  become: no
+
+- name: Install chartplotterhat_utils binaries
+  shell:
+    chdir={{ chartplotterhat_utils_path }}
+    cmd="cargo install --path {{ chartplotterhat_utils_path }} --root /usr"
+    creates=/usr/bin/shutdown_monitor
+
+- name: copy overlay
+  copy:
+    src: "{{ chartplotterhat_utils_path }}/eeprom/chart-plotter-hat.dtbo"
+    dest: /boot/overlays/chart-plotter-hat.dtbo
+
+- name: copy service file
+  copy:
+    src: "{{ chartplotterhat_utils_path }}/shutdown_monitor.service"
+    dest: /lib/systemd/system/shutdown_monitor.service
+  notify: restart_shutdown_monitor
+
+- name: shutdown_monitor start at boot
+  systemd:
+    name: shutdown_monitor
+    enabled: yes
+    masked: no

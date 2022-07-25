@@ -97,12 +97,11 @@
   lineinfile: path=/boot/config.txt regexp='^#(enable_uart=1)$' line='\1' backrefs=yes
   notify: reboot
 
-- name: disable bluetooth overlay so serial port free
-  systemd: name=hciuart enabled=no
-  notify: reboot
-
-- name: disable bluetooth hardware
-  lineinfile: path=/boot/config.txt regexp='^(dtoverlay=disable-bt)$' state=present line='\1' backrefs=yes
+- name: Enable rtc
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^dtoverlay=i2c-rtc,ds3231$'
+    line: dtoverlay=i2c-rtc,ds3231
   notify: reboot
 
 - name: Use minimum amount of memory for GPU
