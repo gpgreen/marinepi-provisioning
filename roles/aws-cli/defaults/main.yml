@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
-aws_cli_user: '{{ ansible_ssh_user }}'
+aws_cli_user: '{{ ansible_user }}'
 aws_output_format: 'json'
 aws_region: 'eu-west-1'
 #aws_access_key_id: 'YOUR_ACCESS_KEY_ID'

@@ -30,15 +30,15 @@
     - libpng-dev
 
 - name: Download proj
-  get_url: url={{ proj_url }} dest=/home/{{ ansible_ssh_user }}
+  get_url: url={{ proj_url }} dest=/home/{{ ansible_user }}
   become: no
   register: proj_sources
 
 - name: unpack proj
   unarchive:
     remote_src=yes
-    src=/home/{{ ansible_ssh_user }}/proj-4.9.3.tar.gz
-    dest=/home/{{ ansible_ssh_user }}
+    src=/home/{{ ansible_user }}/proj-4.9.3.tar.gz
+    dest=/home/{{ ansible_user }}
     creates={{ proj_path }}
   become: no
 

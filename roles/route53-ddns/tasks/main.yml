@@ -13,10 +13,10 @@
 # limitations under the License.
 ---
 - name: Make app dir
-  file: path=/opt/route53 state=directory mode=0755 owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
+  file: path=/opt/route53 state=directory mode=0755 owner={{ ansible_user }} group={{ ansible_user }}
 
 - name: Copy script
-  template: src=update-route53.bash.j2 dest=/opt/route53/update-route53.bash mode=700 owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }}
+  template: src=update-route53.bash.j2 dest=/opt/route53/update-route53.bash mode=700 owner={{ ansible_user }} group={{ ansible_user }}
 
 - name: Set up cron job
-  cron: name="Check & update public ip" minute="0,10,20,30,40,50" user={{ ansible_ssh_user }} job="/opt/route53/update-route53.bash 2>&1 | /usr/bin/logger -t update-route53"
+  cron: name="Check & update public ip" minute="0,10,20,30,40,50" user={{ ansible_user }} job="/opt/route53/update-route53.bash 2>&1 | /usr/bin/logger -t update-route53"

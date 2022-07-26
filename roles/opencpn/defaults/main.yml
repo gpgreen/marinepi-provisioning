@@ -1,0 +1,3 @@
+---
+# make sure to have trailing '/' for proper copying
+opencpn_ansible_host_chart_dir: /home/ggreen/Charts/

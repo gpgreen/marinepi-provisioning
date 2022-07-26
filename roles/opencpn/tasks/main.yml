@@ -101,7 +101,7 @@
 # this will only happen the first time, after that use rsync outside of ansible
 - name: copy charts
   copy:
-    src: /home/{{ ansible_user }}/Charts/
+    src: "{{ opencpn_ansible_host_chart_dir }}"
     dest: /home/{{ ansible_user }}/Charts
   become: no
   when: has_chart_dir.changed

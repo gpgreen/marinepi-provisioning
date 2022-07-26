@@ -1,2 +1,2 @@
 ---
-opencpn_path: /home/{{ ansible_ssh_user }}/opencpn
+opencpn_path: /home/{{ ansible_user }}/opencpn

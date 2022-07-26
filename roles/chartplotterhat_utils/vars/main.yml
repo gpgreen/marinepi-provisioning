@@ -1,2 +1,2 @@
 ---
-chartplotterhat_utils_path: /home/{{ ansible_ssh_user }}/chartplotterhat_utils
+chartplotterhat_utils_path: /home/{{ ansible_user }}/chartplotterhat_utils

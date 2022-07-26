@@ -72,7 +72,7 @@
     autoclean: yes
 
 - name: Some shell aliases for the user
-  lineinfile: dest=~{{ ansible_ssh_user }}/.bashrc line="{{ item }}"
+  lineinfile: dest=~{{ ansible_user }}/.bashrc line="{{ item }}"
   with_items:
   - "alias ll='ls -l'"
   - "alias la='ls -la'"
