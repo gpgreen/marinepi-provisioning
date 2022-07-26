@@ -14,7 +14,10 @@
 
 ---
 - name: Download chartplotterhat_utils
-  git: repo=https://github.com/gpgreen/chartplotterhat_utils dest={{ chartplotterhat_utils_path }}
+  git:
+    repo: "{{ chartplotterhat_utils_git_repo }}"
+    version: "{{ chartplotterhat_utils_git_version }}"
+    dest: "{{ chartplotterhat_utils_path }}"
   become: no
 
 - name: Install chartplotterhat_utils binaries
@@ -34,6 +37,13 @@
     src: "{{ chartplotterhat_utils_path }}/shutdown_monitor.service"
     dest: /lib/systemd/system/shutdown_monitor.service
     remote_src: yes
+  notify: restart_shutdown_monitor
+
+- name: fix service file
+  lineinfile:
+    path: /lib/systemd/system/shutdown_monitor.service
+    regexp: 'OPENCPN_USER=pi'
+    line: Environment="OPENCPN_USER={{ ansible_user }}"
   notify: restart_shutdown_monitor
 
 - name: shutdown_monitor start at boot

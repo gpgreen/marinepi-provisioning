@@ -6,7 +6,18 @@
     state: present
   notify: reboot
 
-- name: Setup udev rule to update system time from RTC
+- name: disable fake-hwclock
+  apt: pkg=fake-hwclock state=absent
+
+- name: remove fake-hwclock from rc.d
+  command: /usr/sbin/update-rc.d -f fake-hwclock remove
+
+- name: disable fake-hwclock service
+  systemd:
+    name: fake-hwclock
+    enabled: no
+
+- name: replace udev script to update system time from RTC
   copy:
-    src: 85-hwclock.rules
-    dest: /etc/udev/rules.d/85-hwclock.rules
+    src: hwclock-set
+    dest: /lib/udev/hwclock-set

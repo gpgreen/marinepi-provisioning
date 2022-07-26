@@ -57,6 +57,7 @@
 #      kplex_marine_traffic_forwarding_enabled: true
 #      kplex_gps_forwarding_enabled: true
 #      kplex_logging_enabled: true
+    - role: rtc
     - role: ntp
     - role: opencpn
     - role: xygrib
@@ -83,12 +84,6 @@
         - 'git config --global user.name "Greg Green"'
         - 'git config --global user.email "ggreen@bit-builder.com"'
       become: no
-
-    - name: enable the rtc clock
-      lineinfile:
-        path: /boot/config.txt
-        regexp: '^dtoverlay=i2c-rtc,ds3231$'
-        line: dtoverlay=i2c-rtc,ds3231
 
     # udev rules for serial-usb devices
 #    - lineinfile: dest=/etc/udev/rules.d/98-zephyr-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
