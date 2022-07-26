@@ -27,11 +27,13 @@
   copy:
     src: "{{ chartplotterhat_utils_path }}/eeprom/chart-plotter-hat.dtbo"
     dest: /boot/overlays/chart-plotter-hat.dtbo
+    remote_src: yes
 
 - name: copy service file
   copy:
     src: "{{ chartplotterhat_utils_path }}/shutdown_monitor.service"
     dest: /lib/systemd/system/shutdown_monitor.service
+    remote_src: yes
   notify: restart_shutdown_monitor
 
 - name: shutdown_monitor start at boot

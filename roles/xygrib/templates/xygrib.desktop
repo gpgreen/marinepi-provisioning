@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=XyGrib
+Comment=grib viewer
+Exec={{ xygrib_install_root }}/XyGrib/XyGrib
+icon={{ xygrib_install_root }}/XyGrib/data/img/xygrib.png
+Encoding=UTF-8
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Education;Science;Geoscience
+Keywords=Weather;grib

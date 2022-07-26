@@ -69,3 +69,39 @@
 
 - name: remove screensaver from autostart
   lineinfile: path=/etc/xdg/lxsession/LXDE-pi/autostart regexp='^@xscreensaver*' state=absent
+
+- name: set chart directory
+  lineinfile:
+    path: /home/{{ ansible_user }}/.opencpn/opencpn.conf
+    regexp: "^InitChartDir="
+    line: InitChartDir=/home/{{ ansible_user }}/Charts
+  become: no
+
+- name: set base map directory
+  lineinfile:
+    path: /home/{{ ansible_user }}/.opencpn/opencpn.conf
+    regexp: "^BasemapDir="
+    line: InitChartDir=/home/{{ ansible_user }}/Charts/GSHHG/
+  become: no
+
+- name: set tcdata directory
+  lineinfile:
+    path: /home/{{ ansible_user }}/.opencpn/opencpn.conf
+    regexp: "^TCDataDir="
+    line: TCDataDir=/home/{{ ansible_user }}/Charts/harmonics-dwf-20210110
+  become: no
+
+- name: create chart directory
+  file:
+    path: /home/{{ ansible_user }}/Charts
+    state: directory
+  register: has_chart_dir
+  become: no
+
+# this will only happen the first time, after that use rsync outside of ansible
+- name: copy charts
+  copy:
+    src: /home/{{ ansible_user }}/Charts/
+    dest: /home/{{ ansible_user }}/Charts
+  become: no
+  when: has_chart_dir.changed

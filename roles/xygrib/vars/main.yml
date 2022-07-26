@@ -4,5 +4,6 @@ proj_path: /home/{{ ansible_ssh_user }}/proj-4.9.3
 proj_install_root: /usr
 xygrib_path: /home/{{ ansible_ssh_user }}/xygrib
 xygrib_repo: https://github.com/opengribs/XyGrib.git
-xygrib_version: v1.2.6.1
+#xygrib_version: v1.2.6.1
+xygrib_version: master
 xygrib_install_root: /opt

@@ -16,13 +16,26 @@
 - name: Download sensors
   git: repo=https://github.com/gpgreen/sensors.git dest={{ sensors_path }}
   become: no
-  register: sensors_sources
 
 - name: copy service file
-  command: cmd="cp {{ sensors_path }}/sensor_monitor.service /lib/systemd/system"
-  when: sensors_sources.changed    
+  copy:
+    src: "{{ sensors_path }}/sensor_monitor.service"
+    dest: /lib/systemd/system
+    remote_src: yes
   notify: restart_sensors
-  
+
+- name: compile and create device tree overlay
+  shell:
+    cmd: "dtc -@ -I dts -O dtb -o /boot/overlays/bme680-i2c.dtbo {{ sensors_path }}/bme680-overlay.dts"
+    creates: /boot/overlays/bme680-i2c.dtbo
+
+- name: Enable device tree overlay on boot
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^dtoverlay=bme680-i2c$'
+    line: dtoverlay=bme680-i2c
+  when: sensors_enable_bme680_i2c_overlay
+
 - name: sensor_monitor start at boot
   systemd:
     name: sensor_monitor

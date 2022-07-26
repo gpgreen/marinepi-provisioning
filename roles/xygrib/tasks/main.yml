@@ -50,7 +50,7 @@
   when: proj_sources.changed
 
 - name: build proj
-  command: make
+  command: make -j 2
   args:
     chdir: "{{ proj_path }}"
   become: no
@@ -89,3 +89,9 @@
   args:
     chdir: "{{ xygrib_path }}/build"
     creates: "{{ xygrib_install_root }}/bin/XyGrib"
+
+- name: install desktop file
+  template:
+    src: xygrib.desktop
+    dest: /usr/share/applications/xygrib.desktop
+    mode: '0644'

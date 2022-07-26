@@ -1,4 +1,4 @@
-#!/bin/bash -evx
+#!/bin/bash
 # set role path in ansible.cfg or ANSIBLE_ROLES_PATH environment variable
 
 role=$1

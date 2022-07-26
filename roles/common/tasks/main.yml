@@ -97,13 +97,6 @@
   lineinfile: path=/boot/config.txt regexp='^#(enable_uart=1)$' line='\1' backrefs=yes
   notify: reboot
 
-- name: Enable rtc
-  lineinfile:
-    path: /boot/config.txt
-    regexp: '^dtoverlay=i2c-rtc,ds3231$'
-    line: dtoverlay=i2c-rtc,ds3231
-  notify: reboot
-
 - name: Use minimum amount of memory for GPU
   lineinfile: path=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=256'
   notify: reboot

@@ -63,8 +63,12 @@
     - role: rust
     - role: mcp2515-can
       vars:
-        mcp2515_use_boot_overlay: false
+        mcp2515_use_boot_overlay: no
     - role: chartplotterhat_utils
+    - role: sensors
+      vars:
+        sensors_enable_bme680_i2c_overlay: yes
+
   tasks:
     - name: Enforce HTTPS for all the GIT traffic
       command: "{{item}}"
@@ -72,6 +76,19 @@
        - 'git config --global url."https://github.com/".insteadOf git@github.com:'
        - 'git config --global url."https://".insteadOf git://'
       become: no
+
+    - name: add git user name and email
+      command: "{{ item }}"
+      with_items:
+        - 'git config --global user.name "Greg Green"'
+        - 'git config --global user.email "ggreen@bit-builder.com"'
+      become: no
+
+    - name: enable the rtc clock
+      lineinfile:
+        path: /boot/config.txt
+        regexp: '^dtoverlay=i2c-rtc,ds3231$'
+        line: dtoverlay=i2c-rtc,ds3231
 
     # udev rules for serial-usb devices
 #    - lineinfile: dest=/etc/udev/rules.d/98-zephyr-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
