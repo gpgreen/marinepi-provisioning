@@ -1,14 +1,15 @@
 #!/bin/bash
 # set role path in ansible.cfg or ANSIBLE_ROLES_PATH environment variable
 
-role=$1
+user=$1
+role=$2
 
 shift 1
 
 cat > /tmp/play.yml <<PLAYBOOK
 ---
 - hosts: all
-  remote_user: ggreen
+  remote_user: $user
   gather_facts: yes
   become: yes
 
