@@ -24,6 +24,18 @@
     remote_src: yes
   notify: restart_sensors
 
+- name: fix system file references part 1
+  lineinfile:
+    path: /lib/systemd/system/sensor_monitor.service
+    regexp: '-u /home/pi'
+    line: ExecStart=/usr/bin/python3 -u /home/{{ ansible_user }}/sensors/sensor_monitor.py
+
+- name: fix system file references part 2
+  lineinfile:
+    path: /lib/systemd/system/sensor_monitor.service
+    regexp: 'CONFIG=/home/pi'
+    line: Environment=SENSOR_MONITOR_CONFIG=/home/{{ ansible_user }}/sensors/sensor_monitor.json"
+
 - name: compile and create device tree overlay
   shell:
     cmd: "dtc -@ -I dts -O dtb -o /boot/overlays/bme680-i2c.dtbo {{ sensors_path }}/bme680-overlay.dts"
