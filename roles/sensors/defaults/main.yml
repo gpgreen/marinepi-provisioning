@@ -1,3 +1,9 @@
 ---
 sensors_enable_bme680_i2c_overlay: no
 sensors_path: /home/{{ ansible_user }}/sensors
+sensors_talker_id: WI
+sensors_udp_host: 127.0.0.1
+sensors_udp_port: 49898
+sensors_sleep_interval: 60
+sensors_db_dir: /home/{{ ansible_user }}/data
+sensors_db_file: sensor_data.db

@@ -1,9 +1,12 @@
 #!/bin/bash
 # set role path in ansible.cfg or ANSIBLE_ROLES_PATH environment variable
 
-user=$1
-role=$2
+host=$1
+user=$2
+role=$3
 
+shift 1
+shift 1
 shift 1
 
 cat > /tmp/play.yml <<PLAYBOOK
@@ -18,8 +21,5 @@ cat > /tmp/play.yml <<PLAYBOOK
 PLAYBOOK
 
 export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
-
-host=$1
-shift 1
 
 ansible-playbook /tmp/play.yml -i $host, $*

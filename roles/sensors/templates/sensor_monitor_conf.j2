@@ -1,0 +1,12 @@
+{
+    "nmea0183_talker_id": "{{ sensors_talker_id }}",
+    "udp_host": "{{ sensors_udp_host }}",
+    "udp_port": {{ sensors_udp_port }},
+    "sleep_interval": {{ sensors_sleep_interval }},
+    "hat_bus": 0,
+    "hat_device": 0,
+    "bmp085_i2c_bus": 1,
+    "bmp085_xclr_pin": 18,
+    "bmp085_eoc_pin": 4,
+    "db_file": "{{ sensors_db_dir }}/{{ sensors_db_file }}"
+}

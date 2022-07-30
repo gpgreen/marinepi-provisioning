@@ -17,24 +17,25 @@
   git: repo=https://github.com/gpgreen/sensors.git dest={{ sensors_path }}
   become: no
 
-- name: copy service file
-  copy:
-    src: "{{ sensors_path }}/sensor_monitor.service"
-    dest: /lib/systemd/system
-    remote_src: yes
+- name: ensure data directory exists
+  file:
+    path: "{{ sensors_db_dir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: copy configuration file
+  template:
+    src: sensor_monitor_conf.j2
+    dest: /etc/sensor_monitor.json
   notify: restart_sensors
 
-- name: fix system file references part 1
-  lineinfile:
-    path: /lib/systemd/system/sensor_monitor.service
-    regexp: '-u /home/pi'
-    line: ExecStart=/usr/bin/python3 -u /home/{{ ansible_user }}/sensors/sensor_monitor.py
-
-- name: fix system file references part 2
-  lineinfile:
-    path: /lib/systemd/system/sensor_monitor.service
-    regexp: 'CONFIG=/home/pi'
-    line: Environment=SENSOR_MONITOR_CONFIG=/home/{{ ansible_user }}/sensors/sensor_monitor.json"
+- name: copy service file
+  template:
+    src: sensor_monitor_service.j2
+    dest: /lib/systemd/system/sensor_monitor.service
+  notify: restart_sensors
 
 - name: compile and create device tree overlay
   shell:
