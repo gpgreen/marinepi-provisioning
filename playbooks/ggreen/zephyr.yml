@@ -49,7 +49,7 @@
     - role: kplex
       vars:
         kplex_serial_inputs:
-          - device: "/dev/serial0"
+          - device: "/dev/ttyS0"
             baud: "9600"
         kplex_udp_inputs:
           - address: "127.0.0.1"
@@ -84,6 +84,11 @@
         - 'git config --global user.name "Greg Green"'
         - 'git config --global user.email "ggreen@bit-builder.com"'
       become: no
+
+    - name: mask getty for ttyS0, otherwise kplex doesn't start
+      systemd:
+        name: serial-getty@ttyS0.service
+        masked: yes
 
     # udev rules for serial-usb devices
 #    - lineinfile: dest=/etc/udev/rules.d/98-zephyr-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ATTRS{idVendor}==\"0403\", ATTRS{idProduct}==\"6001\", ATTRS{serial}==\"FTWR5XON\", SYMLINK+=\"nexus\""
